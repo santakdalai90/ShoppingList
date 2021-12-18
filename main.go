@@ -4,23 +4,25 @@ import (
     //"fmt"
 	//"io"
 	"net/http"
-	//"os"
+	"os"
     "github.com/spf13/viper"
     "strconv"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
-    zerolog.SetGlobalLevel(zerolog.Level(1))
-	// logFile, err := os.OpenFile(viper.GetString("logging.path"), os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-	// if err != nil {
-	// 	log.Fatal().Msgf("Error creating or writing to the log file. %s", err.Error())
-	// }
-	// defer logFile.Close()
+   // Log as JSON instead of the default ASCII formatter.
+  log.SetFormatter(&log.JSONFormatter{})
+
+  // Output to stdout instead of the default stderr
+  // Can be any io.Writer, see below for File example
+  log.SetOutput(os.Stdout)
+
+  // Only log the warning severity or above.
+  log.SetLevel(log.DebugLevel)
 
     router := gin.New()
 
@@ -28,7 +30,7 @@ func main() {
 	router.Use(logger.SetLogger())
 
 	router.GET("/ping", func(c *gin.Context) {
-		log.Info().Msg("Received ping message")
+		log.Info("Received ping message")
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
@@ -36,6 +38,6 @@ func main() {
 
 	//routes.InitRoutes(router)
 
-	log.Info().Str("Port", strconv.Itoa(viper.GetInt("webserver.port"))).Msg("Starting web server")
+	log.Info("Port", strconv.Itoa(viper.GetInt("webserver.port")), "Starting web server")
 	//router.Run(fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("webserver.port"))))
 }
