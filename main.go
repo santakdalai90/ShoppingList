@@ -5,8 +5,8 @@ import (
 	//"io"
 	"net/http"
 	"os"
-    "github.com/spf13/viper"
-    "strconv"
+    //"github.com/spf13/viper"
+    //"strconv"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -38,6 +38,6 @@ func main() {
 
 	//routes.InitRoutes(router)
 
-	log.Info("Port", strconv.Itoa(viper.GetInt("webserver.port")), "Starting web server")
+	log.Info("Port", "8888", "Starting web server")
 	//router.Run(fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("webserver.port"))))
 }
