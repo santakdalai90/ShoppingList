@@ -3,10 +3,12 @@ package main
 import (
 	//"fmt"
 	//"io"
+	"fmt"
 	"net/http"
 	"os"
+	"shoppinglist/config"
 
-	//"github.com/spf13/viper"
+	"github.com/spf13/viper"
 	//"strconv"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
@@ -15,6 +17,7 @@ import (
 )
 
 func main() {
+	config.LoadConfig()
 	// Log as JSON instead of the default ASCII formatter.
 	log.SetFormatter(&log.JSONFormatter{})
 
@@ -24,7 +27,7 @@ func main() {
 
 	// Only log the warning severity or above.
 	log.SetLevel(log.DebugLevel)
-
+	log.Debug("this is to debug")
 	router := gin.New()
 
 	// Add the logger middleware
@@ -37,10 +40,11 @@ func main() {
 		})
 	})
 
+	port := viper.GetInt("webserver.port")
 	//router.POST()
 	//routes.InitRoutes(router)
 
-	log.Info("Port", "8000", "Starting web server")
-	router.Run(":8000")
+	log.Info("Port", port, "Starting web server")
+	router.Run(fmt.Sprintf(":%d", port))
 	//router.Run(fmt.Sprintf(":%s", strconv.Itoa(viper.GetInt("webserver.port"))))
 }

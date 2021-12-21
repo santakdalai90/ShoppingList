@@ -1,0 +1,5 @@
+[webserver]
+port = 9000
+
+[logging]
+level = 5 #Debug
