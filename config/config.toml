@@ -3,3 +3,11 @@ port = 9595
 
 [logging]
 level = 5 #Debug
+
+[database]
+username = "root"
+password = "CC@123"
+dbname = "shoppinglist"
+ip = "mysql"
+port = 3306
+max_connection_attempt = 10
