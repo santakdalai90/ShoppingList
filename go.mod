@@ -14,6 +14,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/rs/zerolog v1.26.1 // indirect
 	github.com/sirupsen/logrus v1.4.2
+	github.com/spf13/viper v1.10.1
 	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect

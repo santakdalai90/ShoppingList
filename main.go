@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 
-	//"github.com/spf13/viper"
 	//"strconv"
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
@@ -33,7 +32,7 @@ func main() {
 	router.GET("/ping", func(c *gin.Context) {
 		log.Info("Received ping message")
 		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+			"man": "pong",
 		})
 	})
 
