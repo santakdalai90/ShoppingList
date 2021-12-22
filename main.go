@@ -1,25 +1,77 @@
 package main
 
 import (
-	//"fmt"
-	//"io"
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/spf13/viper"
-	//"strconv"
+
 	"shoppinglist/config"
 
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	log "github.com/sirupsen/logrus"
+	"gorm.io/driver/mysql"
+
+	"gorm.io/gorm"
 )
+
+var db *gorm.DB
+
+func initDB() {
+	var err error
+
+	var dbConfig = struct {
+		username             string
+		password             string
+		dbname               string
+		ip                   string
+		port                 int
+		maxConnectionAttempt int
+	}{
+		username:             viper.GetString("database.username"),
+		password:             viper.GetString("database.password"),
+		dbname:               viper.GetString("database.dbname"),
+		ip:                   viper.GetString("database.ip"),
+		port:                 viper.GetInt("database.port"),
+		maxConnectionAttempt: viper.GetInt("database.max_connection_attempt"),
+	}
+
+	dbConnStr := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		dbConfig.username,
+		dbConfig.password,
+		dbConfig.ip,
+		dbConfig.port,
+		dbConfig.dbname,
+	)
+
+	var attemptCount int
+	for attemptCount = 0; attemptCount < dbConfig.maxConnectionAttempt; attemptCount++ {
+		db, err = gorm.Open(mysql.Open(dbConnStr), &gorm.Config{})
+		if err == nil {
+			break
+		}
+		fmt.Printf("Attempting connection to database. Attemp count: %d\n", attemptCount)
+		time.Sleep(5 * time.Second)
+	}
+
+	if attemptCount == dbConfig.maxConnectionAttempt {
+		panic("failed to connect to database. Error" + err.Error())
+	}
+
+	fmt.Println("Database connected successfully")
+}
 
 func main() {
 	//Loading configuration
 	config.LoadConfig()
+
+	//initializing database
+	initDB()
+
 	// Log as JSON instead of the default ASCII formatter.
 	log.SetFormatter(&log.JSONFormatter{})
 
