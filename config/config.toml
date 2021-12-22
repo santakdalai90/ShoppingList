@@ -3,3 +3,12 @@ port = 9595
 
 [logging]
 level = 5 #Debug
+
+[database]
+username = "root"
+password = "uma@1992"
+dbname = "shoppinglist"
+ip = "localhost"
+port = 3306
+max_connection_attempt = 10
+
