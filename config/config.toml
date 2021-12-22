@@ -11,3 +11,4 @@ dbname = "shoppinglist"
 ip = "localhost"
 port = 3306
 max_connection_attempt = 10
+

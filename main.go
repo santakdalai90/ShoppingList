@@ -15,7 +15,6 @@ import (
 
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 
@@ -51,7 +50,6 @@ func initDB() {
 		dbConfig.port,
 		dbConfig.dbname,
 	)
-
 	var attemptCount int
 	for attemptCount = 0; attemptCount < dbConfig.maxConnectionAttempt; attemptCount++ {
 		db, err = gorm.Open(mysql.Open(dbConnStr), &gorm.Config{})
