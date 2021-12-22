@@ -6,8 +6,8 @@ level = 5 #Debug
 
 [database]
 username = "root"
-password = "CC@123"
+password = "CC123"
 dbname = "shoppinglist"
-ip = "mysql"
+ip = "localhost"
 port = 3306
 max_connection_attempt = 10
