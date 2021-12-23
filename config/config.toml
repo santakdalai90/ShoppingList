@@ -10,9 +10,5 @@ password = "uma@1992"
 dbname = "shoppinglist"
 ip = "localhost"
 port = 3306
-<<<<<<< HEAD
-max_connection_attempt = 10
-=======
 max_connection_attempt = 10
 
->>>>>>> f5ff5aa10a5e451c5b8bdf8ce422d2f5095100e9
