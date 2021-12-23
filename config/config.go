@@ -15,3 +15,4 @@ func LoadConfig() {
 	if err != nil {
 		panic(fmt.Errorf("fatal error while reading config: %s", err.Error()))
 	}
+}

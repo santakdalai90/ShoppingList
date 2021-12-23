@@ -7,13 +7,17 @@ import (
 	"os"
 
 	//"strconv"
+	"shoppinglist/config"
+
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 func main() {
+	config.LoadConfig()
 	// Log as JSON instead of the default ASCII formatter.
 	log.SetFormatter(&log.JSONFormatter{})
 
@@ -22,7 +26,7 @@ func main() {
 	log.SetOutput(os.Stdout)
 
 	// Only log the warning severity or above.
-	log.SetLevel(log.DebugLevel)
+	log.SetLevel(log.Level(viper.GetInt("logging.level")))
 
 	router := gin.New()
 
