@@ -10,6 +10,10 @@ import (
 
 	"shoppinglist/config"
 	"shoppinglist/model"
+	"shoppinglist/controller"
+	
+	"shoppinglist/routes"
+
 
 	"github.com/gin-contrib/logger"
 	"github.com/gin-gonic/gin"
@@ -41,7 +45,7 @@ func initDB() {
 	}
 
 	dbConnStr := fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", //url
 		dbConfig.username,
 		dbConfig.password,
 		dbConfig.ip,
@@ -97,7 +101,7 @@ func main() {
 	// Only log the warning severity or above.
 	log.SetLevel(log.Level(viper.GetInt("logging.level")))
 	log.Debug("this is a test log")
-
+	controller.InitializeController(db)
 	router := gin.New()
 
 	// Add the logger middleware
@@ -110,7 +114,7 @@ func main() {
 		})
 	})
 
-	//routes.InitRoutes(router)
+	routes.InitRoutes(router)
 	port := viper.GetInt("webserver.port")
 	log.Info("Port", port, "Starting web server")
 	router.Run(fmt.Sprintf(":%d", port))
