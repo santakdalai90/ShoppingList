@@ -12,3 +12,5 @@ type User struct {
 	Password     string         `gorm:"type:varchar(80);not null"`
 	ShoppingList []ShoppingList `gorm:"many2many:user_shopping_lists;foreignkey:UserID"`
 }
+
+

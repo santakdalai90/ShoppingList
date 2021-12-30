@@ -8,3 +8,4 @@ type ShoppingList struct {
 	Items []Item
 	Users []User `gorm:"many2many:user_shopping_lists;association_foreignkey:UserID"`
 }
+
