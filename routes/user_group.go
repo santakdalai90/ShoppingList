@@ -8,3 +8,4 @@ func UserGroup(r *gin.Engine) {
 		userGroup.POST("signup", signupController.AddUser)
 	}
 }
+
