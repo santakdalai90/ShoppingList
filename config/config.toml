@@ -6,8 +6,11 @@ level = 5 #Debug
 
 [database]
 username = "root"
-password = "CC123"
+password = "prasanth12782"
 dbname = "shoppinglist"
 ip = "localhost"
 port = 3306
 max_connection_attempt = 10
+
+[kv]
+ip = "127.0.0.1"
