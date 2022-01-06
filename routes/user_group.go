@@ -6,5 +6,7 @@ func UserGroup(r *gin.Engine) {
 	userGroup := r.Group("/user")
 	{
 		userGroup.POST("signup", signupController.AddUser)
+		userGroup.POST("login", signupController.Login)
+		userGroup.POST("logout", signupController.Logout)
 	}
 }

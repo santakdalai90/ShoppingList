@@ -8,6 +8,7 @@ import (
 
 	"github.com/spf13/viper"
 
+	"shoppinglist/cache"
 	"shoppinglist/config"
 	"shoppinglist/controller"
 	"shoppinglist/model"
@@ -85,7 +86,7 @@ func initDB() {
 func main() {
 	//Loading configuration
 	config.LoadConfig()
-
+	cache.InitCache()
 	//initializing database
 	initDB()
 

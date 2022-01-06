@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"shoppinglist/cache"
 	"shoppinglist/model"
 	"shoppinglist/util"
 
@@ -11,6 +12,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// SignupController is a controller handling user sign-ins
 type SignupController struct{}
 
 func (s *SignupController) AddUser(context *gin.Context) {
@@ -79,5 +81,90 @@ func (s *SignupController) AddUser(context *gin.Context) {
 	context.JSON(http.StatusCreated, gin.H{
 		"status":  http.StatusCreated,
 		"message": "User successfully created",
+	})
+}
+
+// Login logs in a user to the application based on the credentials passed in the context
+func (s *SignupController) Login(context *gin.Context) {
+	loginInfo := struct {
+		UserID   string `json:"user_id"`
+		Password string `json:"password"`
+	}{}
+
+	if err := context.BindJSON(&loginInfo); err != nil {
+		log.Errorf("Error occurred while reading the input request body. %s", err.Error())
+		context.JSON(http.StatusBadRequest, gin.H{
+			"status":        http.StatusBadRequest,
+			"message":       "Error in the request body",
+			"session_token": nil,
+		})
+		return
+	}
+
+	user, err := userWrapper.GetUser(loginInfo.UserID)
+
+	if err != nil {
+		log.Errorf("Error occurred while searching for the user %v in the database. %s", loginInfo.UserID, err.Error())
+		context.JSON(http.StatusNotFound, gin.H{
+			"status":        http.StatusNotFound,
+			"message":       "Mentioned user not found",
+			"session_token": nil,
+		})
+		return
+	}
+
+	if !util.CheckPasswordHash(loginInfo.Password, user.Password) {
+		log.Errorf("Invalid username/email or password for user: %s", loginInfo.UserID)
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"status":        http.StatusUnauthorized,
+			"message":       "Invalid username/email or password",
+			"session_token": nil,
+		})
+		return
+	}
+
+	// Create a random session token
+	sessionToken, err := cache.CreateSessionToken(user)
+	if err != nil {
+		log.Error(err.Error())
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"status":        http.StatusInternalServerError,
+			"message":       "Internal Server Error",
+			"session_token": nil,
+		})
+		return
+	}
+
+	log.Infof("User: %s, successfully logged in", loginInfo.UserID)
+	context.JSON(http.StatusOK, gin.H{
+		"status":        http.StatusOK,
+		"message":       "User successfully logged in",
+		"session_token": sessionToken,
+	})
+}
+
+// Logout performs log out based on the session cookie passed in the context
+func (s *SignupController) Logout(context *gin.Context) {
+	status, resp := cache.AuthorizeSessionToken(context)
+	if status != http.StatusOK {
+		context.JSON(status, gin.H{
+			"status":  status,
+			"message": "User unauthorised",
+		})
+		return
+	}
+
+	if !cache.DeleteSessionToken(context) {
+		context.JSON(status, gin.H{
+			"status":  http.StatusInternalServerError,
+			"message": "Internal error while logging out",
+		})
+		return
+	}
+
+	log.Infof("User successfully logged out userID: %s", string(resp.([]byte)))
+	context.JSON(http.StatusOK, gin.H{
+		"status":  http.StatusOK,
+		"message": "User successfully logged out",
 	})
 }

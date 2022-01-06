@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// LoadConfig loads the configuration from config/config.toml
 func LoadConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
