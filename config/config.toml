@@ -13,4 +13,4 @@ port = 3306
 max_connection_attempt = 10
 
 [kv]
-ip = "127.0.0.1"
+ip = "127.0.0.1:9675"
