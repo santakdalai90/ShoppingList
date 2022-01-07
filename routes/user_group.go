@@ -8,5 +8,6 @@ func UserGroup(r *gin.Engine) {
 		userGroup.POST("signup", signupController.AddUser)
 		userGroup.POST("login", signupController.Login)
 		userGroup.POST("logout", signupController.Logout)
+		userGroup.GET("fetch-shopping-list", userController.FetchShoppingLists)
 	}
 }

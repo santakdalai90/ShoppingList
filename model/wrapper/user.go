@@ -70,10 +70,10 @@ func (u *UserWrapper) GetShoppingLists(userID string) []model.ShoppingList {
 	}
 
 	u.DB.Preload("ShoppingLists").Find(&user)
-	for i := 0; i < len(user.ShoppingList); i++ {
-		u.DB.Preload("Users").Find(&user.ShoppingList[i])
-		u.DB.Preload("Items").Find(&user.ShoppingList[i])
+	for i := 0; i < len(user.ShoppingLists); i++ {
+		u.DB.Preload("Users").Find(&user.ShoppingLists[i])
+		u.DB.Preload("Items").Find(&user.ShoppingLists[i])
 	}
 
-	return user.ShoppingList
+	return user.ShoppingLists
 }
