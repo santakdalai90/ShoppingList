@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"shoppinglist/model"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gomodule/redigo/redis"
@@ -16,9 +17,15 @@ var cache redis.Conn
 
 // InitCache initializes redis cache based on the configuration of the app
 func InitCache() {
-	conn, err := redis.DialURL(fmt.Sprintf("redis://%s", viper.GetString("kv.ip")))
-	if err != nil {
-		panic(err)
+	var conn redis.Conn
+	var err error
+	for i := 0; i < 10; i++ {
+		conn, err = redis.DialURL(fmt.Sprintf("redis://%s", viper.GetString("kv.ip")))
+		if err == nil {
+			break
+		}
+		log.Error(err)
+		time.Sleep(5 * time.Second)
 	}
 	log.Info("Connection to Redis established")
 	cache = conn

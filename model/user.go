@@ -10,5 +10,5 @@ type User struct {
 	Name          string         `gorm:"not null"`
 	Email         string         `gorm:"not null"`
 	Password      string         `gorm:"type:varchar(80);not null"`
-	ShoppingLists []ShoppingList `gorm:"many2many:user_shopping_lists;foreignkey:UserID"`
+	ShoppingLists []ShoppingList `gorm:"many2many:user_shopping_lists"`
 }
