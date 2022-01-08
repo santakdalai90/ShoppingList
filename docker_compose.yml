@@ -1,0 +1,27 @@
+version: '3.3'
+
+services:
+  redis:
+    image: redis:alpine
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=CC123
+      - MYSQL_DATABASE=shoppinglist
+    volumes:
+      - my-datavolume:/var/lib/mysql
+ 
+  shoppinglist:
+    build: .
+    ports:
+      - "9595:9595"
+    depends_on:
+      - "redis"
+      - "mysql"
+    links:
+      - mysql:mysql
+      - redis:redis
+
+volumes:
+  my-datavolume:
