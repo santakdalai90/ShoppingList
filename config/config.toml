@@ -8,6 +8,11 @@ level = 5 #Debug
 username = "root"
 password = "CC123"
 dbname = "shoppinglist"
-ip = "localhost"
+ip = "mysql"
+#ip = "localhost"
 port = 3306
-max_connection_attempt = 10
+max_connection_attempt = 60
+
+[kv]
+ip = "redis"
+#ip = "127.0.0.1:9675"
